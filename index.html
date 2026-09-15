@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards Từ Vựng Tiếng Anh - School</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #6c5ce7;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .card {
+      width: 340px;
+      height: 420px;
+      background: #ffffff;
+      border-radius: 25px;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+      border: 5px solid #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px 20px;
+    }
+
+    .icon {
+      font-size: 5rem;
+      margin-top: 10px;
+    }
+
+    .text-container {
+      text-align: center;
+    }
+
+    .word {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #6c5ce7;
+      margin-bottom: 8px;
+    }
+
+    .meaning {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #e84393;
+    }
+
+    .btn-audio {
+      background: #6c5ce7;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+      transition: transform 0.1s, background 0.2s;
+    }
+
+    .btn-audio:hover {
+      background: #a29bfe;
+      transform: scale(1.05);
+    }
+
+    .controls {
+      margin-top: 30px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .btn-nav {
+      background: #e84393;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(232, 67, 147, 0.3);
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-nav:hover {
+      background: #fd79a8;
+      transform: scale(1.05);
+    }
+
+    .progress {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #2d3436;
+      background: rgba(255,255,255,0.85);
+      padding: 8px 16px;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🏫 School & Subjects 📚</h1>
+
+  <div class="card">
+    <div class="icon" id="icon">🎨</div>
+    
+    <div class="text-container">
+      <div class="word" id="word">art</div>
+      <div class="meaning" id="meaning">môn mỹ thuật</div>
+    </div>
+
+    <button class="btn-audio" onclick="speakCurrentWord()">🔊 Nghe đọc</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn-nav" onclick="prevCard()">◄ Trước</button>
+    <div class="progress" id="progress">1 / 27</div>
+    <button class="btn-nav" onclick="nextCard()">Sau ►</button>
+  </div>
+
+  <script>
+    const vocabulary = [
+      { word: "art", meaning: "môn mỹ thuật", icon: "🎨" },
+      { word: "backpack (UK rucksack)", meaning: "ba lô", icon: "🎒" },
+      { word: "bin", meaning: "thùng rác", icon: "🗑️" },
+      { word: "club", meaning: "câu lạc bộ", icon: "⚽" },
+      { word: "college", meaning: "trường cao đẳng / đại học", icon: "🏫" },
+      { word: "competition", meaning: "cuộc thi", icon: "🏆" },
+      { word: "dictionary", meaning: "từ điển", icon: "📖" },
+      { word: "flag", meaning: "lá cờ", icon: "🚩" },
+      { word: "geography", meaning: "môn địa lý", icon: "🌍" },
+      { word: "glue", meaning: "keo dán / hồ dán", icon: "🧴" },
+      { word: "group", meaning: "nhóm", icon: "👥" },
+      { word: "gym", meaning: "phòng tập thể dục", icon: "🏀" },
+      { word: "history", meaning: "môn lịch sử", icon: "📜" },
+      { word: "language", meaning: "ngôn ngữ", icon: "🗣️" },
+      { word: "maths (US math)", meaning: "môn toán", icon: "📐" },
+      { word: "online", meaning: "trực tuyến", icon: "💻" },
+      { word: "project", meaning: "dự án / bài tập lớn", icon: "📊" },
+      { word: "rucksack (US backpack)", meaning: "ba lô", icon: "🎒" },
+      { word: "science", meaning: "môn khoa học", icon: "🔬" },
+      { word: "scissors", meaning: "cái kéo", icon: "✂️" },
+      { word: "screen", meaning: "màn hình", icon: "🖥️" },
+      { word: "shelf", meaning: "kệ / giá sách", icon: "📚" },
+      { word: "student", meaning: "học sinh / sinh viên", icon: "🧑‍🎓" },
+      { word: "study", meaning: "học tập / nghiên cứu", icon: "✏️" },
+      { word: "subject", meaning: "môn học", icon: "📝" },
+      { word: "timetable", meaning: "thời khóa biểu", icon: "📅" },
+      { word: "university", meaning: "trường đại học", icon: "🎓" }
+    ];
+
+    let currentIndex = 0;
+    const wordElement = document.getElementById('word');
+    const meaningElement = document.getElementById('meaning');
+    const iconElement = document.getElementById('icon');
+    const progressElement = document.getElementById('progress');
+
+    function updateCard() {
+      const item = vocabulary[currentIndex];
+      wordElement.textContent = item.word;
+      meaningElement.textContent = item.meaning;
+      iconElement.textContent = item.icon;
+      progressElement.textContent = `${currentIndex + 1} / ${vocabulary.length}`;
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < vocabulary.length - 1) {
+        currentIndex++;
+        updateCard();
+      }
+    }
+
+    function speakCurrentWord() {
+      const textToSpeak = vocabulary[currentIndex].word.replace(/\(.*?\)/g, '').trim();
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    updateCard();
+  </script>
+</body>
+</html>
